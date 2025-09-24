@@ -1,0 +1,12 @@
+title: USDM Census 2020 County Aggregations
+description: Weekly US Drought Monitor (USDM) data aggregated to Census 2020 county boundaries
+author: R. Kyle Bocinsky
+url: "https://strong-fsa.github.io/usdm-counties-census-2020/"  # Your GitHub Pages URL
+baseurl: "/usdm-counties-census-2020"
+
+remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+
+# minima:
+#   skin: classic
