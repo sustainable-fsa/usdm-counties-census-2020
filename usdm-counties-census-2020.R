@@ -38,7 +38,7 @@ dir.create(
 ## Load the FSA LFP county boundary data
 if(!file.exists("data/census-2020-counties.parquet")){
   sf::read_sf(
-    "https://sustainable-fsa.github.io/usdm-counties/data/census/parquet/2020-counties.parquet"
+    "https://sustainable-fsa.com/usdm-counties/data/census/parquet/2020-counties.parquet"
   ) %>%
     dplyr::filter(!(STATEFP %in% c("60", "66", "69", "78"))) %>%
     sf::write_sf(
@@ -74,7 +74,7 @@ usdm_get_dates() %>%
   tibble::tibble(Date = .) %>%
   dplyr::mutate(
     USDM = 
-      file.path("https://sustainable-fsa.github.io/usdm", 
+      file.path("https://sustainable-fsa.com/usdm", 
                 "usdm", "data", "parquet", 
                 paste0("USDM_",Date,".parquet")),
     outfile = file.path("data", "usdm", 
