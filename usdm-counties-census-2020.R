@@ -47,8 +47,8 @@ if(!file.exists("data/census-2020-counties.parquet")){
       "data/census-2020-counties.parquet",
       driver = "Parquet",
       layer_options = c("COMPRESSION=ZSTD",
-                        "GEOMETRY_ENCODING=GEOARROW",
-                        "WRITE_COVERING_BBOX=NO"),
+                        "COMPRESSION_LEVEL=13"),
+      delete_dsn = TRUE
     )
 }
 
@@ -126,6 +126,7 @@ usdm_get_dates() %>%
           arrow::write_parquet(sink = outfile,
                                version = "latest",
                                compression = "zstd",
+                               compression_level = 13,
                                use_dictionary = TRUE)
         
       }
@@ -143,6 +144,7 @@ list.files("data/usdm",
   arrow::write_parquet(sink = "usdm-counties-census-2020.parquet",
                        version = "latest",
                        compression = "zstd",
+                       compression_level = 13,
                        use_dictionary = TRUE)
 
 ## Create directory listing infrastructure
