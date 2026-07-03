@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![Static
-Badge](https://img.shields.io/badge/Repo-sustainable--fsa%2Fusdm--counties--census--2020-magenta?style=flat)](https://github.com/sustainable-fsa/usdm-counties-fsa-lfp/)
+Badge](https://img.shields.io/badge/Repo-sustainable--fsa%2Fusdm--counties--census--2020-magenta?style=flat)](https://github.com/sustainable-fsa/usdm-counties-census-2020/)
 ![Last
 Update](https://img.shields.io/github/last-commit/sustainable-fsa/usdm-counties-census-2020?style=flat)
 ![Repo
@@ -13,7 +13,7 @@ aggregated to the US Census 2020 county boundaries. This dataset
 facilitates county-level analysis of drought conditions, supporting
 research, policy-making, and climate resilience planning.
 
-<a href="https://sustainable-fsa.com/usdm-counties-fsa-lfp/manifest.html" target="_blank">📂
+<a href="https://sustainable-fsa.com/usdm-counties-census-2020/manifest.html" target="_blank">📂
 View the US Drought Monitor Census 2020 county archive listing here.</a>
 
 Federal law and FSA guidance describes a process by which [county-level
