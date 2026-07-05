@@ -31,6 +31,13 @@ library(arrow)
 library(furrr)
 library(future.mirai)
 
+source("R/s3-archive.R")
+s3_preflight()
+s3_bucket_name <- Sys.getenv("S3_BUCKET", unset = "sustainable-fsa")
+s3_prefix      <- Sys.getenv("S3_PREFIX", unset = "usdm-counties-census-2020")
+## Pull prior archive state so incremental guards see existing outputs
+s3_pull(s3_bucket_name, paste0(s3_prefix, "/data"), "data")
+
 dir.create(
   file.path("data", "usdm"),
   recursive = TRUE,
@@ -40,7 +47,7 @@ dir.create(
 ## Load the FSA LFP county boundary data
 if(!file.exists("data/census-2020-counties.parquet")){
   sf::read_sf(
-    "https://sustainable-fsa.com/usdm-counties/data/census/parquet/2020-counties.parquet"
+    "https://data.sustainable-fsa.com/usdm-counties/data/census/parquet/2020-counties.parquet"
   ) %>%
     dplyr::filter(!(STATEFP %in% c("60", "66", "69", "78"))) %>%
     sf::write_sf(
@@ -58,7 +65,7 @@ counties <-
 
 ## Get the current list of USDM dates
 usdm_get_dates <-
-  function(as_of = lubridate::today()){
+  function(as_of = lubridate::today("America/Denver")){
     as_of %<>%
       lubridate::as_date()
     
@@ -75,9 +82,9 @@ plan(mirai_multisession)
 usdm_get_dates() %>%
   tibble::tibble(Date = .) %>%
   dplyr::mutate(
-    USDM = 
-      file.path("https://sustainable-fsa.com/usdm", 
-                "usdm", "data", "parquet", 
+    USDM =
+      file.path("https://data.sustainable-fsa.com/usdm",
+                "data", "parquet",
                 paste0("USDM_",Date,".parquet")),
     outfile = file.path("data", "usdm", 
                         paste0("USDM_",Date,".parquet"))
@@ -180,5 +187,18 @@ generate_tree_flat <- function(
 # Generate the flat index
 generate_tree_flat()
 
-# Knit the readme
-rmarkdown::render("README.Rmd")
+## ---- Publish to S3 ---------------------------------------------------
+s3_push(s3_bucket_name, paste0(s3_prefix, "/data"), "data", delete = TRUE)
+s3_put(s3_bucket_name, paste0(s3_prefix, "/usdm-counties-census-2020.parquet"),
+       "usdm-counties-census-2020.parquet",
+       content_type = "application/vnd.apache.parquet",
+       cache_control = "max-age=3600")
+s3_put(s3_bucket_name, paste0(s3_prefix, "/manifest.json"), "manifest.json",
+       content_type = "application/json",
+       cache_control = "max-age=3600")
+s3_verify(s3_bucket_name, paste0(s3_prefix, "/data"), "data",
+          allow_extra = character(0))
+s3_write_manifest(s3_bucket_name, s3_prefix)
+cf_invalidate(c(paste0("/", s3_prefix, "/usdm-counties-census-2020.parquet"),
+                paste0("/", s3_prefix, "/manifest.json"),
+                paste0("/", s3_prefix, "/_manifest.txt")))
