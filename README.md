@@ -13,7 +13,7 @@ aggregated to the US Census 2020 county boundaries. This dataset
 facilitates county-level analysis of drought conditions, supporting
 research, policy-making, and climate resilience planning.
 
-<a href="https://data.sustainable-fsa.com/#/usdm-counties-census-2020/" target="_blank">📂
+<a href="https://data.sustainable-fsa.com/usdm-counties-census-2020/" target="_blank">📂
 View the US Drought Monitor Census 2020 county archive listing here.</a>
 
 Federal law and FSA guidance describes a process by which [county-level
