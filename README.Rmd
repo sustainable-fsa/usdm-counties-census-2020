@@ -137,9 +137,10 @@ counties <-
   # You can read straight from online
   # sf::read_sf("https://data.sustainable-fsa.com/usdm-counties-census-2020/data/census-2020-counties.parquet") |>
   # sf::read_sf("data/census-2020-counties.parquet") |>
-  tigris::counties(cb = TRUE, 
+  tigris::counties(cb = TRUE,
                    year = 2020,
-                   resolution = "5m") |>
+                   resolution = "5m",
+                   progress_bar = FALSE) |>
   dplyr::filter(!(STATEFP %in% c("60", "66", "69", "78"))) |>
   # transform to WGS 84
   sf::st_transform("EPSG:4326") |>
@@ -186,6 +187,8 @@ ggplot(counties) +
        subtitle = format(date, " %B %d, %Y")) +
   theme_void()
 ```
+
+Latest USDM map date: **`r format(date, "%B %d, %Y")`**
 
 ---
 
