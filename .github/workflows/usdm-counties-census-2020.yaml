@@ -85,14 +85,14 @@ jobs:
           private-key: ${{ secrets.DISPATCH_APP_PRIVATE_KEY }}
           owner: sustainable-fsa
           repositories: |
-            fsa-lfp-eligibility-reanalysis
+            fsa-lfp-eligibility-derived
           permission-actions: write
 
       - name: Dispatch downstream workflows
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPOS: >-
-            sustainable-fsa/fsa-lfp-eligibility-reanalysis
+            sustainable-fsa/fsa-lfp-eligibility-derived
         run: |
           failed=""
           for repo in $REPOS; do
