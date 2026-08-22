@@ -44,12 +44,26 @@ dir.create(
   showWarnings = FALSE
 )
 
-## Load the FSA LFP county boundary data
+## Load the 2020 TIGER/Line county boundaries from the census-counties archive,
+## which owns the download, the schema normalization and the validity repair.
+##
+## That archive does not carry the state name — it publishes the Census schema
+## — so join it here. The determinations below are written with a State column,
+## and the boundaries used to arrive with one because usdm-counties joined it
+## before republishing them.
+states <-
+  tigris::states(cb = TRUE) %>%
+  sf::st_drop_geometry() %>%
+  dplyr::select(STATEFP, State = NAME) %>%
+  dplyr::arrange(STATEFP)
+
 if(!file.exists("data/census-2020-counties.parquet")){
   sf::read_sf(
-    "https://data.sustainable-fsa.com/usdm-counties/data/census/parquet/2020-counties.parquet"
+    "https://data.sustainable-fsa.com/census-counties/data/parquet/2020-counties.parquet"
   ) %>%
     dplyr::filter(!(STATEFP %in% c("60", "66", "69", "78"))) %>%
+    dplyr::left_join(states, by = dplyr::join_by(STATEFP)) %>%
+    dplyr::select(STATEFP, State, COUNTYFP, County, `CountyLSAD`, Area) %>%
     sf::write_sf(
       "data/census-2020-counties.parquet",
       driver = "Parquet",
