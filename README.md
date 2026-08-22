@@ -93,9 +93,10 @@ proceeds as follows:
 - Uses `pak::pak()` to ensure fresh, source-built installs of critical
   geospatial packages.
 
-2.  **Download Census 2020 county boundary data**. -Re-calculate county
-    areas and save as
-    [`data/census-2020-counties.parquet`](data/census-2020-counties.parquet)
+2.  **Fetch the 2020 county boundaries** from the
+    [`census-counties`](https://github.com/sustainable-fsa/census-counties)
+    archive, drop the territories, join the state name, and cache as
+    `data/census-2020-counties.parquet`.
 
 3.  **Download and intersect**:
 
